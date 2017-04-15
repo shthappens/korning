@@ -20,7 +20,7 @@ CSV.foreach("sales.csv", headers: true) do |row|
 
     values = row[0].split(" ")
     employee_name = values[0..1].join(" ")
-    email = values[2]
+    email = values[2].delete! "()"
 
     insert_employees = "SELECT employee_name FROM employees WHERE employee_name = $1"
     results = conn.exec_params(insert_employees, [employee_name])
@@ -31,7 +31,7 @@ CSV.foreach("sales.csv", headers: true) do |row|
 
     values = row[1].split(" ")
     customer_name = values[0]
-    account_no = values[1]
+    account_no = values[1].delete! "()"
 
     insert_customers = "SELECT customer_name, account_no FROM customers WHERE customer_name = $1 AND account_no = $2"
     results = conn.exec_params(insert_customers, [customer_name, account_no])
